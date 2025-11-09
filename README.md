@@ -28,3 +28,7 @@ Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
    Les informations sont enregistrées sur une seule ligne dans le fichier meteo.txt avec la structure suivante :
    [Date] - [Heure] - Ville : [Température actuelle] - [Prévision du lendemain]  
 
+Here is an example weather report:
+
+![Weather Report](share/pics/San_Francisco.png)
+
