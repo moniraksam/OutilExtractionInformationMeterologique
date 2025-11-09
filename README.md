@@ -1,4 +1,4 @@
-### Outil d'Extraction d'Information Météorologique
+*** Outil d'Extraction d'Information Météorologique ***
 
 Ce projet permet de récupérer périodiquement les informations météorologiques pour une ville donnée via le service [wttr.in](https://wttr.in).  
 
