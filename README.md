@@ -32,7 +32,8 @@ Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
        temp_demain="+${temp_demain_number}°C"  
    else  
        temp_demain="${temp_demain_number}°C"  
-   fi  
+   fi
+  
    Ce bloc ajoute le signe + ou - si nécessaire et le symbole °C, ce qui rend la température lisible et compréhensible pour l’utilisateur.  
 
   
