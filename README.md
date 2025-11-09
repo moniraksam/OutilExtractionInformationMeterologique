@@ -13,7 +13,9 @@ Le projet est développé en plusieurs versions, avec des fonctionnalités suppl
 Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
 
 1. **Récupération des données météorologiques brutes**  
-   Utilise `curl` pour interroger le service wttr.in et récupérer les données météorologiques pour la ville spécifiée en argument.  
+   Utilise `curl` pour interroger le service wttr.in et récupérer les données météorologiques pour la ville spécifiée en argument.
+   Voici un exemple de bulletin météo : 
+   ![bulletin météo](share/pics/San_Francisco.png)
    Les données brutes sont sauvegardées dans un fichier temporaire local. 
  
 2. **Extraction des températures**
@@ -28,7 +30,5 @@ Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
    Les informations sont enregistrées sur une seule ligne dans le fichier meteo.txt avec la structure suivante :
    [Date] - [Heure] - Ville : [Température actuelle] - [Prévision du lendemain]  
 
-Here is an example weather report:
 
-![Weather Report](share/pics/San_Francisco.png)
 
