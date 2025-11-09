@@ -19,8 +19,7 @@ Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
 - `curl -s "wttr.in/${ville}?2&T"` → récupère les données météo brutes depuis wttr.in  
 - `> meteo_brute.txt` → les sauvegarde dans un fichier local (meteo_brute.txt)  
  
-2. **Extraction des températures**
-   Extraction des températures
+2. **Extraction des températures**  
    Le script extrait à partir du fichier brut :
    * La température actuelle de la ville
    * La prévision pour le lendemain  
