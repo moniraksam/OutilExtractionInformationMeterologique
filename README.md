@@ -21,7 +21,7 @@ Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
  
 2. **Extraction des températures**  
    Le script extrait à partir du fichier brut :
-   * La température actuelle de la ville
+   * La température actuelle de la ville  
        `curl -s "wttr.in/${ville}?format=%t"` → récupère la température actuelle en °C ou °F selon le format.
    * La prévision pour le lendemain  
 
