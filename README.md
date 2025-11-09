@@ -27,12 +27,16 @@ Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
 
 3. **Formatage des informations**  
    Les températures extraites sont formatées pour être lisibles et compréhensibles.  
+   
+   Code :  
 
    if [ "$temp_demain_number" -gt 0 ]; then  
        temp_demain="+${temp_demain_number}°C"  
    else  
        temp_demain="${temp_demain_number}°C"  
    fi
+
+   Explications :  
   
    Ce bloc ajoute le signe + ou - si nécessaire et le symbole °C, ce qui rend la température lisible et compréhensible pour l’utilisateur.  
 
@@ -40,6 +44,20 @@ Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
 4. **Enregistrement dans meteo.txt**
    Les informations sont enregistrées sur une seule ligne dans le fichier meteo.txt avec la structure suivante :
    [Date] - [Heure] - Ville : [Température actuelle] - [Prévision du lendemain]  
+ 
+   Code:  
+
+   `echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" >> meteo.txt`  
+
+   Explications :  
+     
+- `${date_jour}` → date du jour (YYYY-MM-DD)  
+- `${heure}` → heure actuelle (HH:MM)  
+- `${ville}` → nom de la ville passée en argument  
+- `${temp_actuelle}` → température actuelle récupérée via curl  
+- `${temp_demain}` → température prévisionnelle formatée  
+
+Le >> meteo.txt indique que tout est écrit sur une seule ligne dans le fichier meteo.txt.  
 
 
 
