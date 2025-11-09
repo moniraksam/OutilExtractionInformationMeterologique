@@ -57,7 +57,7 @@ Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
    - `${temp_actuelle}` → température actuelle récupérée via curl  
    - `${temp_demain}` → température prévisionnelle formatée  
 
-   Le >> meteo.txt indique que tout est écrit sur une seule ligne dans le fichier meteo.txt.  
+   Le `>> meteo.txt` indique que tout est écrit sur une seule ligne dans le fichier meteo.txt.  
 
 
 
