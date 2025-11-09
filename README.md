@@ -28,11 +28,11 @@ Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
 3. **Formatage des informations**  
    Les températures extraites sont formatées pour être lisibles et compréhensibles.  
 
-   `if [ "$temp_demain_number" -gt 0 ]; then  
+   if [ "$temp_demain_number" -gt 0 ]; then  
        temp_demain="+${temp_demain_number}°C"  
    else  
        temp_demain="${temp_demain_number}°C"  
-   fi`  
+   fi  
 
   
 4. **Enregistrement dans meteo.txt**
