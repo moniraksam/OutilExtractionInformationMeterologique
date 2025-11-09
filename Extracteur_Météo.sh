@@ -11,3 +11,6 @@ if [ -z "$1" ]; then
 fi
 
 ville=$1
+
+
+curl https://wttr.in/$ville > meteo.txt
