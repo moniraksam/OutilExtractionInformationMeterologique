@@ -13,4 +13,6 @@ fi
 ville=$1
 
 
+# Curl données métérologique dans fichier meteo.txt
+
 curl https://wttr.in/$ville > meteo.txt
