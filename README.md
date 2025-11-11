@@ -1,12 +1,10 @@
 # Outil d'Extraction d'Information Météorologique
 
-Ce projet permet de récupérer périodiquement les informations météorologiques pour une ville donnée via le service [wttr.in](https://wttr.in).  
+Ce projet a pour objectif de concevoir un outil automatisé d’extraction d’informations météorologiques pour une ville donnée, en s’appuyant sur le service [wttr.in](https://wttr.in).  
 
-Le script principal (`Extracteur\_Meteo.sh`) extrait la température actuelle ainsi que la prévision pour le lendemain et les enregistre dans un fichier texte.  
+Le script principal (`Extracteur\_Meteo.sh`) interroge ce service afin d’obtenir la température actuelle ainsi que la prévision pour le lendemain, puis consigne ces informations dans un fichier texte au format lisible et structuré.  
 
-
-
-Le projet est développé en plusieurs versions, avec des fonctionnalités supplémentaires à chaque étape. L'utilisation de \*\*Git\*\* permet de suivre toutes les modifications et de gérer les versions.
+Le développement du projet est organisé en plusieurs versions successives, chacune introduisant de nouvelles fonctionnalités. L’utilisation de **Git** assure un suivi rigoureux du code, la gestion des différentes itérations du projet et la traçabilité des contributions de chaque membre de l’équipe.  
 
 ## Version 1 : Script de base
 
