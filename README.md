@@ -1,4 +1,4 @@
-# Extracteur d’Informations Météorologiques  
+# Extracteur d’Informations Météorologiques  (Version 1.0)
 
 ## Présentation
 
@@ -10,7 +10,7 @@ Le script interroge l’API textuelle de `wttr.in`, extrait la **température ac
 
 ## Fonctionnement général
 
-### Script principal : `Extracteur_Météo.sh`
+### Script principal : `Extracteur_Météo.sh` 
 
 Le script s’exécute depuis le terminal avec le nom d’une ville en argument :
 
