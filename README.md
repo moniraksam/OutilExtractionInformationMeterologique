@@ -56,5 +56,7 @@ Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
 
    Le `>> meteo.txt` indique que tout est écrit sur une seule ligne dans le fichier meteo.txt.  
 
+Sur macOS, le script ne fonctionne pas correctement à cause de différences dans la gestion des caractères et des outils système par rapport à Linux. Les tableaux renvoyés par wttr.in ne sont pas interprétés de la même façon, ce qui empêche le calcul des températures. Le script ne peut donc pas être lancer sur macOS.
+
 
 
