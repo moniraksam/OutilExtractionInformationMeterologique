@@ -11,16 +11,16 @@ fi
 ville=$1
 
 # Récupération de la date et de l'heure
-date_jour=$(date +%F)      # date au format YYYY-MM-DD
-heure=$(date +%H:%M)       # heure au format HH:MM
+date_jour=$(date +%F)      # date avec option au format YYYY-MM-DD
+heure=$(date +%H:%M)       # heure avec option au format HH:MM
 
 # Température actuelle (forcée en unités métriques et langue anglaise)
 temp_actuelle=$(curl -s "wttr.in/${ville}?format=%t&m&lang=en")
 
-# Récupérer la météo brute aujourd'hui + demain, en texte, en °C, anglais
+# Récupérer la météo brute aujourd'hui + demain en texte en °C anglais
 curl -s "wttr.in/${ville}?2&T&m&lang=en" > meteo_brute.txt
 
-# Calcul de la température moyenne de demain
+# Calcul de la température moyenne de demain et regex avec awk
 temp_demain_number=$(
     awk '
     BEGIN {
@@ -33,31 +33,30 @@ temp_demain_number=$(
     # Chaque jour commence par une grosse ligne de tableau
     /^┌/ && /┤/ {
         header_count++
-        if (header_count == 2) {
-            in_second = 1      # on est dans le tableau de demain
-        } else if (header_count > 2 && in_second == 1) {
-            in_second = 0      # sécurité si jamais il y avait un 3e tableau
+        if (header_count == 2) { # Determine si on est dans le tab de demain
+            in_second = 1      
         }
+        
     }
 
-    # On traite uniquement le 2e tableau (demain)
+    # Traiter juste le deuxieme tab
     in_second {
-        # garder seulement les lignes avec °C, sans km/h, mm, km
+        # Regex pour garder les lignes avec °C, sans km/h, mm, km
         if ($0 !~ /°C/ || $0 ~ /km\/h/ || $0 ~ /mm/ || $0 ~ / km/) next
 
-        line = $0
+        ligne = $0
         # Extraire toutes les températures de la ligne
-        while (match(line, /[+-]?[0-9]+(\([0-9]+\))? ?°C/)) {
-            temp_str = substr(line, RSTART, RLENGTH)
+        while (match(ligne, /[+-]?[0-9]+(\([0-9]+\))? ?°C/)) {
+            temp_str = substr(ligne, RSTART, RLENGTH)
             gsub(/ ?°C/, "", temp_str)
-            gsub(/\(.*\)/, "", temp_str)  # enlever (8) dans +9(8)
+            gsub(/\(.*\)/, "", temp_str)  # enlever les valeurs dans les parantheses (deuxiemes valeur de meteos)
 
             if (temp_str ~ /^[+-]?[0-9]+$/) {
                 sum += temp_str + 0
                 count++
             }
 
-            line = substr(line, RSTART + RLENGTH)
+            ligne = substr(ligne, RSTART + RLENGTH)
         }
     }
 
@@ -83,4 +82,5 @@ else
     temp_demain="${temp_demain_number}°C"
 fi
 
+# Echo dans le format specifique demandé au TP 
 echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" >> meteo.txt
