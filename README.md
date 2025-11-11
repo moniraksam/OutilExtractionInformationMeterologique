@@ -119,8 +119,8 @@ Sortie ajoutée à `meteo.txt` :
 
 | Système | Compatibilité | Détails |
 |----------|----------------|----------|
-| **Linux** | ✅ Compatible | Bash, awk et curl sont requis |
-| **Windows (WSL)** | ✅ Compatible | Bash, awk et curl sont requis |
+| **Linux** | ✅ Compatible | Bash, awk et curl sont requis. |
+| **Windows (WSL)** | ✅ Compatible | Bash, awk et curl sont requis. |
 | **macOS** | ⚠️ Partiellement compatible | Le script peut échouer à cause des différences UTF-8 dans `awk` et du rendu des caractères de bordure (`┌ ┤`).Nous avons une branche avec une version de scripte disponible pour macOS en travaille.|
 
 
@@ -129,7 +129,5 @@ Sortie ajoutée à `meteo.txt` :
 
 Projet réalisé dans le cadre du **TP Config Pour Un Poste De Travaille — MIAGE UT3 Toulouse**.  
 **Contributeurs :**  
-- Alexandre Sam Monirak  
-- Joachim Morf
-- Carlos Neungoue
-- Noe Steinbach
+Alexandre Monirak Sam Joachim Morf Carlo Neungoue Noé Steinbach
+
