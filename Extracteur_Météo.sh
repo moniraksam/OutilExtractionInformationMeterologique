@@ -26,49 +26,47 @@ curl -s "wttr.in/${ville}?2&T" > meteo_brute.txt #2& récupérer météo daujour
 temp_demain_number=$(
     awk '
     BEGIN {
+        header_count = 0
+        in_second = 0
         sum = 0
         count = 0
-        found_second_table = 0
     }
 
-    # Chercher le 2ème jour (on skip le premier tableau qui est aujourdhui)
-    /Morning.*Noon.*Evening.*Night/ {
-        found_second_table++
-    }
-
-    # On traite seulement le 2ème tableau
-    found_second_table == 2 {
-        # Chercher les températures uniquement (pas km/h, pas mm, pas "km")
-        if ($0 ~ /°C/ && $0 !~ /km\/h/ && $0 !~ /mm/ && $0 !~ / km/) {
-            # Extraire toutes les températures de la ligne
-            line = $0
-            while (match(line, /[+-]?[0-9]+(\([0-9]+\))? ?°C/)) {
-                temp_str = substr(line, RSTART, RLENGTH)
-                # Nettoyer pour garder juste le nombre
-                gsub(/ ?°C/, "", temp_str)
-                gsub(/\(.*\)/, "", temp_str)  # Enlever (13) dans +14(13)
-                
-                # Convertir en nombre
-                if (temp_str ~ /^[+-]?[0-9]+$/) {
-                    sum += temp_str
-                    count++
-                }
-                
-                # Continuer la recherche dans le reste de la ligne
-                line = substr(line, RSTART + RLENGTH)
-            }
+    # Chaque jour commence par cette grosse ligne avec les cases du tableau
+    /┌──────────────────────────────┬───────────────────────┤/ {
+        header_count++
+        if (header_count == 2) {
+            in_second = 1     # on est dans le tableau de demain
+        } else if (header_count > 2 && in_second == 1) {
+            in_second = 0     # sécurité si jamais il y avait un 3e tableau
         }
     }
 
-    # Arrêter après le 2ème tableau
-    found_second_table == 2 && /Location:/ {
-        exit
+    # On ne traite que les lignes du 2e tableau (demain)
+    in_second {
+        # On ne prend que les lignes avec des °C, sans km/h, mm, km
+        if ($0 !~ /°C/ || $0 ~ /km\/h|mm| km/) next
+
+        line = $0
+        # Extraire toutes les températures de la ligne
+        while (match(line, /[+-]?[0-9]+(\([0-9]+\))? ?°C/)) {
+            temp_str = substr(line, RSTART, RLENGTH)
+            gsub(/ ?°C/, "", temp_str)
+            gsub(/\(.*\)/, "", temp_str)  # enlever (8) dans +9(8)
+
+            if (temp_str ~ /^[+-]?[0-9]+$/) {
+                sum += temp_str + 0
+                count++
+            }
+
+            line = substr(line, RSTART + RLENGTH)
+        }
     }
 
     END {
         if (count > 0) {
             avg = sum / count
-            print sprintf("%.0f", avg)
+            printf "%.0f\n", avg
         }
     }
     ' meteo_brute.txt
