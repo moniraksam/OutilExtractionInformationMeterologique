@@ -1,7 +1,6 @@
 # Extracteur d’Informations Météorologiques  
-*(Projet Bash — wttr.in Data Parser)*
 
-## 🧭 Présentation
+## Présentation
 
 Ce projet consiste à développer un **outil automatisé en Bash** permettant d’extraire et de consigner les **informations météorologiques essentielles** d’une ville donnée à partir du service en ligne [wttr.in](https://wttr.in).  
 
@@ -120,10 +119,10 @@ Sortie ajoutée à `meteo.txt` :
 
 | Système | Compatibilité | Détails |
 |----------|----------------|----------|
-| **Linux** | ✅ Fonctionne parfaitement | Bash, awk et curl sont requis |
-| **Windows (WSL)** | ✅ Compatible | Fonctionne sans modification |
-| **macOS** | ⚠️ Partiellement compatible | Le script peut échouer à cause des différences UTF-8 dans `awk` et du rendu des caractères de bordure (`┌ ┤`). Il est recommandé d’utiliser **gawk** :<br>`brew install gawk` |
- Nous avons une branche avec une version de scripte disponible pour macOS en travaille.
+| **Linux** | ✅ Compatible | Bash, awk et curl sont requis |
+| **Windows (WSL)** | ✅ Compatible | Bash, awk et curl sont requis |
+| **macOS** | ⚠️ Partiellement compatible | Le script peut échouer à cause des différences UTF-8 dans `awk` et du rendu des caractères de bordure (`┌ ┤`).Nous avons une branche avec une version de scripte disponible pour macOS en travaille.|
+
 
 
 ## Auteurs
