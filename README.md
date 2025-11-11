@@ -13,14 +13,13 @@ Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
 1. **Récupération des données météorologiques brutes**  
    Utilise `curl` pour interroger le service wttr.in et récupérer les données météorologiques pour la ville spécifiée en argument. 
    Les données brutes sont sauvegardées dans un fichier temporaire local.  
-   Dans la ligne : `curl -s "wttr.in/${ville}?2&T" > meteo_brute.txt`  
-   - `curl -s "wttr.in/${ville}?2&T"` → récupère les données météo brutes depuis wttr.in  
+   Dans la ligne : `curl -s "wttr.in/${ville}?2&T&m&lang=en" > meteo_brute.txt`  
+   - `curl -s "wttr.in/${ville}?2&T&m&lang=en"` → récupère les données météo brutes depuis wttr.in  
    - `> meteo_brute.txt` → les sauvegarde dans un fichier local (meteo_brute.txt)  
  
 2. **Extraction des températures**  
    Le script extrait à partir du fichier brut :
    * La température actuelle de la ville  
-       `curl -s "wttr.in/${ville}?format=%t"` → récupère la température actuelle
    * La prévision pour le lendemain  
 
 3. **Formatage des informations**  
@@ -28,11 +27,11 @@ Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
    
    Code :  
 
-   if [ "$temp_demain_number" -gt 0 ]; then  
-       temp_demain="+${temp_demain_number}°C"  
-   else  
-       temp_demain="${temp_demain_number}°C"  
-   fi
+   `if [ "$temp_demain_number" -gt 0 ]; then`  
+       `temp_demain="+${temp_demain_number}°C"`  
+   `else`  
+       `temp_demain="${temp_demain_number}°C"`  
+   `fi`
 
    Explications :  
   
