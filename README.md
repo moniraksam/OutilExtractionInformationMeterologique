@@ -1,62 +1,133 @@
-# Outil d'Extraction d'Information Météorologique
+# Extracteur d’Informations Météorologiques  (Version 1.0)
 
-Ce projet a pour objectif de concevoir un outil automatisé d’extraction d’informations météorologiques pour une ville donnée, en s’appuyant sur le service [wttr.in](https://wttr.in).  
+## Présentation
 
-Le script principal (`Extracteur\_Meteo.sh`) interroge ce service afin d’obtenir la température actuelle ainsi que la prévision pour le lendemain, puis consigne ces informations dans un fichier texte au format lisible et structuré.  
+Ce projet consiste à développer un **outil automatisé en Bash** permettant d’extraire et de consigner les **informations météorologiques essentielles** d’une ville donnée à partir du service en ligne [wttr.in](https://wttr.in).  
 
-Le développement du projet est organisé en plusieurs versions successives, chacune introduisant de nouvelles fonctionnalités. L’utilisation de **Git** assure un suivi rigoureux du code, la gestion des différentes itérations du projet et la traçabilité des contributions de chaque membre de l’équipe.  
+Le script interroge l’API textuelle de `wttr.in`, extrait la **température actuelle** ainsi que la **température moyenne prévue pour le lendemain**, puis enregistre ces données dans un fichier texte au format structuré.  
 
-## Version 1 : Script de base
+---
 
-Le script `Extracteur_Meteo.sh` réalise les étapes suivantes :
+## Fonctionnement général
 
-1. **Récupération des données météorologiques brutes**  
-   Utilise `curl` pour interroger le service wttr.in et récupérer les données météorologiques pour la ville spécifiée en argument. 
-   Les données brutes sont sauvegardées dans un fichier temporaire local.  
-   Dans la ligne : `curl -s "wttr.in/${ville}?2&T&m&lang=en" > meteo_brute.txt`  
-   - `curl -s "wttr.in/${ville}?2&T&m&lang=en"` → récupère les données météo brutes depuis wttr.in  
-   - `> meteo_brute.txt` → les sauvegarde dans un fichier local (meteo_brute.txt)  
- 
-2. **Extraction des températures**  
-   Le script extrait à partir du fichier brut :
-   * La température actuelle de la ville  
-   * La prévision pour le lendemain  
+### Script principal : `Extracteur_Météo.sh` 
 
-3. **Formatage des informations**  
-   Les températures extraites sont formatées pour être lisibles et compréhensibles.  
-   
-   Code :  
+Le script s’exécute depuis le terminal avec le nom d’une ville en argument :
 
-   `if [ "$temp_demain_number" -gt 0 ]; then`  
-       `temp_demain="+${temp_demain_number}°C"`  
-   `else`  
-       `temp_demain="${temp_demain_number}°C"`  
-   `fi`
+```bash
+./Extracteur_Météo.sh "Toulouse"
+```
 
-   Explications :  
-  
-   Ce bloc ajoute le signe + ou - si nécessaire et le symbole °C, ce qui rend la température lisible et compréhensible pour l’utilisateur.  
+### Étapes principales
 
-  
-4. **Enregistrement dans meteo.txt**
-   Les informations sont enregistrées sur une seule ligne dans le fichier meteo.txt avec la structure suivante :
-   [Date] - [Heure] - Ville : [Température actuelle] - [Prévision du lendemain]  
- 
-   Code:  
+1. **Vérification des arguments**  
+   Le script vérifie qu’une ville a bien été spécifiée :
 
-   `echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" >> meteo.txt`  
+   ```bash
+   if [ -z "$1" ]; then
+       echo "Usage : $0 'nomDeVille'"
+       exit 1
+   fi
+   ```
 
-   Explications :  
-     
-   - `${date_jour}` → date du jour (YYYY-MM-DD)  
-   - `${heure}` → heure actuelle (HH:MM)  
-   - `${ville}` → nom de la ville passée en argument  
-   - `${temp_actuelle}` → température actuelle récupérée via curl  
-   - `${temp_demain}` → température prévisionnelle formatée  
+2. **Récupération des métadonnées locales**  
+   Extraction de la date et de l’heure actuelles :
 
-   Le `>> meteo.txt` indique que tout est écrit sur une seule ligne dans le fichier meteo.txt.  
+   ```bash
+   date_jour=$(date +%F)   # ex: 2025-11-12
+   heure=$(date +%H:%M)    # ex: 14:35
+   ```
 
-Sur macOS, le script ne fonctionne pas correctement à cause de différences dans la gestion des caractères et des outils système. Les tableaux renvoyés par wttr.in ne sont pas interprétés de la même façon, ce qui empêche le calcul des températures. Le script ne peut donc pas être lancer sur macOS.
+3. **Obtention de la température actuelle**  
+   Utilisation de `curl` avec le format minimaliste de wttr.in :
+
+   ```bash
+   temp_actuelle=$(curl -s "wttr.in/${ville}?format=%t&m&lang=en")
+   ```
+
+   - `format=%t` : affiche uniquement la température actuelle  
+   - `m` : unités métriques  
+   - `lang=en` : garantit des données cohérentes pour le parsing  
+
+4. **Téléchargement des prévisions brutes (aujourd’hui + demain)**  
+   Le script télécharge le tableau ASCII complet de wttr.in :
+
+   ```bash
+   curl -s "wttr.in/${ville}?2&T&m&lang=en" > meteo_brute.txt
+   ```
+
+   - `2` : inclut la prévision d’aujourd’hui et de demain  
+   - `T` : désactive les séquences de terminal (pas de couleur)  
+   - `m` : unités métriques  
+   - `lang=en` : langue anglaise  
+
+5. **Extraction de la température moyenne du lendemain**  
+   Le bloc `awk` analyse la structure ASCII renvoyée par wttr.in :  
+   - Détecte le **deuxième tableau** du rendu (correspondant à “Tomorrow”)  
+   - Extrait toutes les valeurs numériques suivies de “°C”  
+   - Ignore les lignes contenant des unités parasites (`km/h`, `mm`, `km`)  
+   - Calcule la **moyenne des températures journalières**
+
+   ```bash
+   awk '
+   /^┌/ && /┤/ { ... }  # détection des tableaux
+   /°C/ && !/km\/h|mm| km/ { ... }  # extraction des températures
+   ' meteo_brute.txt
+   ```
+
+6. **Formatage et enregistrement du résultat final**  
+   Une fois la température moyenne calculée, elle est formatée et ajoutée dans un fichier `meteo.txt` :
+
+   ```bash
+   echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" >> meteo.txt
+   ```
+
+   Exemple de sortie :
+
+   ```
+   2025-11-12 - 14:35 - Toulouse : +16°C - +13°C
+   ```
+
+---
+
+## Structure du projet
+
+```
+.
+├── Extracteur_Météo.sh    # Script principal
+├── meteo_brute.txt        # Données brutes temporaires (wttr.in)
+└── meteo.txt              # Historique des relevés formatés
+```
+
+---
+
+## Exemple d’exécution
+
+```bash
+$ ./Extracteur_Météo.sh "Paris"
+```
+
+Sortie ajoutée à `meteo.txt` :
+
+```
+2025-11-12 - 14:30 - Paris : +11°C - +8°C
+```
+
+---
+
+## Compatibilité
+
+| Système | Compatibilité | Détails |
+|----------|----------------|----------|
+| **Linux** | ✅ Compatible | Bash, awk et curl sont requis. |
+| **Windows (WSL)** | ✅ Compatible | Bash, awk et curl sont requis. |
+| **macOS** | ⚠️ Partiellement compatible | Le script peut échouer à cause des différences UTF-8 dans `awk` et du rendu des caractères de bordure (`┌ ┤`).Nous avons une branche avec une version de scripte disponible pour macOS en travaille.|
 
 
+
+## Auteurs
+
+Projet réalisé dans le cadre du **TP Config Pour Un Poste De Travaille — MIAGE UT3 Toulouse**.  
+**Contributeurs :**  
+Alexandre Monirak SAM, Joachim MORF, Carlo NEUNGOUE, Noé STEINBACH
 
