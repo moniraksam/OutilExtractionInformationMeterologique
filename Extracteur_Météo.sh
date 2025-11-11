@@ -20,7 +20,6 @@ heure=$(date +%H:%M)       # heure
 temp_actuelle=$(curl -s "wttr.in/${ville}?format=%t")
 
 
-
 # Utilisation de curl pour récupérer la météo 
 curl -s "wttr.in/${ville}?2&T" > meteo_brute.txt #2& récupérer météo daujourd'hui +demmain et T enlever la couleur
 
@@ -33,15 +32,20 @@ temp_demain_number=$(
         count = 0
     }
 
-    # Détection du 2e tableau (demain)
-    /┌──────────────────────────────┬───────────────────────┤/ {
+    # Détection du 2e tableau en cherchant la date de demain
+    # Plus robuste que les caractères unicode
+    /Mon [0-9]+ Nov|Tue [0-9]+ Nov|Wed [0-9]+ Nov|Thu [0-9]+ Nov|Fri [0-9]+ Nov|Sat [0-9]+ Nov|Sun [0-9]+ Nov/ {
         header_count++
         if (header_count == 2) in_second = 1
-        else if (header_count > 2 && in_second == 1) in_second = 0
+    }
+    
+    # Arrêter après le 2e tableau
+    /Location:/ {
+        in_second = 0
     }
 
     in_second {
-        # On ne prend QUE les lignes avec °C ET on évite celles avec km/h, mm, ou km
+        # ne prend QUE les lignes avec °C ET évite celles avec km/h, mm, ou km
         if ($0 !~ /°C/ || $0 ~ /km\/h|mm| km/) next
 
         # Regex plus stricte : le °C doit être collé ou avec UN SEUL espace
