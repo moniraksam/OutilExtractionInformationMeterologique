@@ -1,28 +1,26 @@
 #!/bin/bash
 
-
-#Cas dont la ville est vide (argument positionnel 1 vide)
-
+# Cas dont la ville est vide (argument positionnel 1 vide)
 if [ -z "$1" ]; then
-	echo "Usage Invalide."
-	echo "Dans cette version il faut spécifié une ville au 1er argument"
-	echo "Usage : $0 'nomDeVille'"
-	exit 1
+    echo "Usage invalide."
+    echo "Dans cette version il faut spécifier une ville au 1er argument"
+    echo "Usage : $0 'nomDeVille'"
+    exit 1
 fi
 
 ville=$1
 
 # Récupération de la date et de l'heure
-date_jour=$(date +%F)      # date
-heure=$(date +%H:%M)       # heure
+date_jour=$(date +%F)      # date au format YYYY-MM-DD
+heure=$(date +%H:%M)       # heure au format HH:MM
 
-# Température actuelle 
-temp_actuelle=$(curl -s "wttr.in/${ville}?format=%t")
+# Température actuelle (forcée en unités métriques et langue anglaise)
+temp_actuelle=$(curl -s "wttr.in/${ville}?format=%t&m&lang=en")
 
+# Récupérer la météo brute aujourd'hui + demain, en texte, en °C, anglais
+curl -s "wttr.in/${ville}?2&T&m&lang=en" > meteo_brute.txt
 
-# Utilisation de curl pour récupérer la météo 
-curl -s "wttr.in/${ville}?2&T" > meteo_brute.txt #2& récupérer météo daujourd'hui +demmain et T enlever la couleur
-
+# Calcul de la température moyenne de demain
 temp_demain_number=$(
     awk '
     BEGIN {
@@ -32,20 +30,20 @@ temp_demain_number=$(
         count = 0
     }
 
-    # Chaque jour commence par cette grosse ligne avec les cases du tableau
-    /┌──────────────────────────────┬───────────────────────┤/ {
+    # Chaque jour commence par une grosse ligne de tableau
+    /^┌/ && /┤/ {
         header_count++
         if (header_count == 2) {
-            in_second = 1     # on est dans le tableau de demain
+            in_second = 1      # on est dans le tableau de demain
         } else if (header_count > 2 && in_second == 1) {
-            in_second = 0     # sécurité si jamais il y avait un 3e tableau
+            in_second = 0      # sécurité si jamais il y avait un 3e tableau
         }
     }
 
-    # On ne traite que les lignes du 2e tableau (demain)
+    # On traite uniquement le 2e tableau (demain)
     in_second {
-        # On ne prend que les lignes avec des °C, sans km/h, mm, km
-        if ($0 !~ /°C/ || $0 ~ /km\/h|mm| km/) next
+        # garder seulement les lignes avec °C, sans km/h, mm, km
+        if ($0 !~ /°C/ || $0 ~ /km\/h/ || $0 ~ /mm/ || $0 ~ / km/) next
 
         line = $0
         # Extraire toutes les températures de la ligne
@@ -66,20 +64,19 @@ temp_demain_number=$(
     END {
         if (count > 0) {
             avg = sum / count
-            printf "%.0f\n", avg
+            printf "%.0f\n", avg   # arrondi à l’entier le plus proche
         }
     }
     ' meteo_brute.txt
 )
 
-
-# Si on n'a rien trouvé, on met une valeur vide
+# Si on n'a rien trouvé, on met une erreur
 if [ -z "$temp_demain_number" ]; then
     echo "Erreur : impossible d’extraire les températures de demain."
     exit 4
 fi
 
-# On reformate en chaîne avec le signe et °C
+# Reformater en chaîne avec signe et °C
 if [ "$temp_demain_number" -gt 0 ]; then
     temp_demain="+${temp_demain_number}°C"
 else
