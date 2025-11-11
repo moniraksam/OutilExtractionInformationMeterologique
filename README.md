@@ -129,5 +129,5 @@ Sortie ajoutée à `meteo.txt` :
 
 Projet réalisé dans le cadre du **TP Config Pour Un Poste De Travaille — MIAGE UT3 Toulouse**.  
 **Contributeurs :**  
-Alexandre Monirak Sam Joachim Morf Carlo Neungoue Noé Steinbach
+Alexandre Monirak SAM, Joachim MORF, Carlo NEUNGOUE, Noé STEINBACH
 
