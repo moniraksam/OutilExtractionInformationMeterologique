@@ -150,7 +150,7 @@ Pour rendre le projet plus pratique, la version 2 introduit :
 
 &nbsp;  - Puis exécuter la commande `(crontab -l 2>/dev/null; cat /chemin de meteo.cron/meteo.cron) | crontab - ` après avoir changer `/chemin de meteo.cron/` par le chemin réelle  
 
-
+   - Vous pouvez ensuite vérifier vos crontab avec a commande `crontab -e` pour s'assurer que la commande a bien été prise en compte  
 
 
 
