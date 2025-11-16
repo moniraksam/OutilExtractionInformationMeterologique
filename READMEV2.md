@@ -86,7 +86,7 @@ Explication de la commande `(crontab -l 2>/dev/null; cat /chemin de meteo.cron/m
    - Le pipe `| crontab -` installe toutes les tâches combinées dans la table cron de l’utilisateur  
 Les anciennes tâches cron sont donc conservées et la nouvelle est ajoutée.
 
-
+Vous pouvez vous renseigner sur la syntaxe et la documentation cron auprès de ce lien : [Cron et crontab](https://www.linuxtricks.fr/wiki/cron-et-crontab-le-planificateur-de-taches)
 
 
 
