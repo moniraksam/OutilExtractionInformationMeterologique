@@ -1,18 +1,16 @@
 #!/bin/bash
 
-# Cas dont la ville est vide (argument positionnel 1 vide)
+# Ville par défaut
 if [ -z "$1" ]; then
-    echo "Usage invalide."
-    echo "Dans cette version il faut spécifier une ville au 1er argument"
-    echo "Usage : $0 'nomDeVille'"
-    exit 1
+    echo "Aucun nom de ville spécifié, utilisation de la ville par défaut : Toulouse"
+    ville="Toulouse"
+else
+    ville="$1"
 fi
 
-ville=$1
-
 # Récupération de la date et de l'heure
-date_jour=$(date +%F)      # Date avec option au format YYYY-MM-DD
-heure=$(date +%H:%M)       # Heure avec option au format HH:MM
+date_jour=$(date +%F)      # date avec option au format YYYY-MM-DD
+heure=$(date +%H:%M)       # heure avec option au format HH:MM
 
 # Température actuelle (forcée en unités métriques et langue anglaise)
 temp_actuelle=$(curl -s "wttr.in/${ville}?format=%t&m&lang=en")
@@ -49,7 +47,7 @@ temp_demain_number=$(
         while (match(ligne, /[+-]?[0-9]+(\([0-9]+\))? ?°C/)) {
             temp_str = substr(ligne, RSTART, RLENGTH)
             gsub(/ ?°C/, "", temp_str)
-            gsub(/\(.*\)/, "", temp_str)  # Enlever les valeurs dans les parantheses (deuxiemes valeur de meteos)
+            gsub(/\(.*\)/, "", temp_str)  # enlever les valeurs dans les parantheses (deuxiemes valeur de meteos)
 
             if (temp_str ~ /^[+-]?[0-9]+$/) {
                 sum += temp_str + 0
@@ -63,16 +61,22 @@ temp_demain_number=$(
     END {
         if (count > 0) {
             avg = sum / count
-            printf "%.0f\n", avg   # Arrondir à l’entier le plus proche
+            printf "%.0f\n", avg   # arrondi à l’entier le plus proche
         }
     }
     ' meteo_brute.txt
 )
 
+# Version 3 
+vitesse=$(curl -s "https://wttr.in/$ville?format=%w")
+humidite=$(curl -s "https://wttr.in/$ville?format=%h")
+echo $vitesse
+echo $humidite
+
 # Si on n'a rien trouvé, on met une erreur
 if [ -z "$temp_demain_number" ]; then
     echo "Erreur : impossible d’extraire les températures de demain."
-    exit 4
+    exit 1
 fi
 
 # Reformater en chaîne avec signe et °C
@@ -82,5 +86,6 @@ else
     temp_demain="${temp_demain_number}°C"
 fi
 
-# Echo dans le format specifique demandé au TP dans fichier "meteo.txt"
+# Echo dans le format specifique demandé au TP 
 echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" >> meteo.txt
+echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" 
