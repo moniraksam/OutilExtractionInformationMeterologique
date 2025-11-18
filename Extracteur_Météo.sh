@@ -68,8 +68,11 @@ temp_demain_number=$(
 )
 
 # Version 3 
-vitesse=$(curl -s "https://wttr.in/$ville?format=%w")
-humidite=$(curl -s "https://wttr.in/$ville?format=%h")
+vitesse=$(curl -s "https://wttr.in/$ville?format=%w") # Documentation readme.md wttr.in one line output
+humidite=$(curl -s "https://wttr.in/$ville?format=%h") # Documentation readme.md wttr.in one line output
+visibilite=$(grep -Eo '[0-9]+ km' meteo_brute.txt | head -n 1) # Grep avec extended regex pour visibilite
+
+
 
 # Si on n'a rien trouvé, on met une erreur
 if [ -z "$temp_demain_number" ]; then
@@ -85,5 +88,5 @@ else
 fi
 
 # Echo dans le format specifique demandé au TP 
-echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}\nPrévision Temp Demain : ${temp_demain}" >> meteo.txt
-echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}\nPrévision Temp Demain : ${temp_demain}" 
+echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}" >> meteo.txt
+echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}"
