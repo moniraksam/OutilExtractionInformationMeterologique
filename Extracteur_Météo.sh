@@ -70,8 +70,6 @@ temp_demain_number=$(
 # Version 3 
 vitesse=$(curl -s "https://wttr.in/$ville?format=%w")
 humidite=$(curl -s "https://wttr.in/$ville?format=%h")
-echo $vitesse
-echo $humidite
 
 # Si on n'a rien trouvé, on met une erreur
 if [ -z "$temp_demain_number" ]; then
@@ -87,5 +85,5 @@ else
 fi
 
 # Echo dans le format specifique demandé au TP 
-echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" >> meteo.txt
-echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" 
+echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}\nPrévision Temp Demain : ${temp_demain}" >> meteo.txt
+echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}\nPrévision Temp Demain : ${temp_demain}" 
