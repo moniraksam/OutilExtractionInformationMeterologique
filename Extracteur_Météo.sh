@@ -72,13 +72,15 @@ vitesse=$(curl -s "https://wttr.in/$ville?format=%w") # Documentation readme.md 
 humidite=$(curl -s "https://wttr.in/$ville?format=%h") # Documentation readme.md wttr.in one line output
 visibilite=$(grep -Eo '[0-9]+ km' meteo_brute.txt | head -n 1) # Grep avec extended regex pour visibilite
 
-
-
 # Si on n'a rien trouvé, on met une erreur
 if [ -z "$temp_demain_number" ]; then
     echo "Erreur : impossible d’extraire les températures de demain."
+    temp_demain_number="N/A"
+    echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}" >> meteo.txt
+    echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : N/A"
     exit 1
 fi
+
 
 # Reformater en chaîne avec signe et °C
 if [ "$temp_demain_number" -gt 0 ]; then
