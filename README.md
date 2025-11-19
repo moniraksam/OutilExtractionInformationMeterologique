@@ -40,7 +40,7 @@ Lorsqu'elle est activée :
 }
 ```
 
-### System de gestion des erreurs et de logs
+### 3. System de gestion des erreurs et de logs
 
 En cas de problème avec la connexion à wttr.in, le script écrit un message d'erreur dans un fichier de logs d'erreur : `meteo_erreur.log`.
 
