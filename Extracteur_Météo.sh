@@ -1,26 +1,35 @@
 #!/bin/bash
 
-# Cas dont la ville est vide (argument positionnel 1 vide)
+
+# Ville par défaut
 if [ -z "$1" ]; then
-    echo "Usage invalide."
-    echo "Dans cette version il faut spécifier une ville au 1er argument"
-    echo "Usage : $0 'nomDeVille'"
-    exit 1
+    echo "Aucun nom de ville spécifié, utilisation de la ville par défaut : Toulouse"
+    ville="Toulouse"
+else
+    ville="$1"
 fi
 
-ville=$1
+format_json=false
+
+# Version 3 partie 2 sauvegarder format json
+if [ "$2" == "--json" ]; then
+	format_json=true
+fi
 
 # Récupération de la date et de l'heure
-date_jour=$(date +%F)      # date au format YYYY-MM-DD
-heure=$(date +%H:%M)       # heure au format HH:MM
+date_jour=$(date +%F)      # date avec option au format YYYY-MM-DD
+heure=$(date +%H:%M)       # heure avec option au format HH:MM
+>>>>>>> origin/monirak_dev
 
 # Température actuelle (forcée en unités métriques et langue anglaise)
 temp_actuelle=$(curl -s "wttr.in/${ville}?format=%t&m&lang=en")
 
-# Récupérer la météo brute aujourd'hui + demain, en texte, en °C, anglais
+
+# Récupérer la météo brute aujourd'hui + demain en texte en °C anglais
 curl -s "wttr.in/${ville}?2&T&m&lang=en" > meteo_brute.txt
 
-# Calcul de la température moyenne de demain
+# Calcul de la température moyenne de demain et regex avec awk
+>>>>>>> origin/monirak_dev
 temp_demain_number=$(
     awk '
     BEGIN {
@@ -33,31 +42,33 @@ temp_demain_number=$(
     # Chaque jour commence par une grosse ligne de tableau
     /^┌/ && /┤/ {
         header_count++
-        if (header_count == 2) {
-            in_second = 1      # on est dans le tableau de demain
-        } else if (header_count > 2 && in_second == 1) {
-            in_second = 0      # sécurité si jamais il y avait un 3e tableau
+
+        if (header_count == 2) { # Determine si on est dans le tab de demain
+            in_second = 1      
         }
+        
     }
 
-    # On traite uniquement le 2e tableau (demain)
+    # Traiter juste le deuxieme tab
     in_second {
-        # garder seulement les lignes avec °C, sans km/h, mm, km
+        # Regex pour garder les lignes avec °C, sans km/h, mm, km
         if ($0 !~ /°C/ || $0 ~ /km\/h/ || $0 ~ /mm/ || $0 ~ / km/) next
 
-        line = $0
+        ligne = $0
         # Extraire toutes les températures de la ligne
-        while (match(line, /[+-]?[0-9]+(\([0-9]+\))? ?°C/)) {
-            temp_str = substr(line, RSTART, RLENGTH)
+        while (match(ligne, /[+-]?[0-9]+(\([0-9]+\))? ?°C/)) {
+            temp_str = substr(ligne, RSTART, RLENGTH)
             gsub(/ ?°C/, "", temp_str)
-            gsub(/\(.*\)/, "", temp_str)  # enlever (8) dans +9(8)
+            gsub(/\(.*\)/, "", temp_str)  # enlever les valeurs dans les parantheses (deuxiemes valeur de meteos)
+>>>>>>> origin/monirak_dev
 
             if (temp_str ~ /^[+-]?[0-9]+$/) {
                 sum += temp_str + 0
                 count++
             }
 
-            line = substr(line, RSTART + RLENGTH)
+            ligne = substr(ligne, RSTART + RLENGTH)
+>>>>>>> origin/monirak_dev
         }
     }
 
@@ -70,12 +81,38 @@ temp_demain_number=$(
     ' meteo_brute.txt
 )
 
+# Version 3 partie 1
+vitesse=$(curl -s "https://wttr.in/$ville?format=%w") # Documentation readme.md wttr.in one line output
+humidite=$(curl -s "https://wttr.in/$ville?format=%h") # Documentation readme.md wttr.in one line output
+visibilite=$(grep -Eo '[0-9]+ km' meteo_brute.txt | head -n 1) # Grep avec extended regex pour visibilite
+
 # Si on n'a rien trouvé, on met une erreur
 if [ -z "$temp_demain_number" ]; then
     echo "Erreur : impossible d’extraire les températures de demain."
-    exit 4
+    temp_demain_number="N/A"
+    echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : N/A"
+    echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}" >> meteo.txt
+    if [ "$format_json" = true ]; then
+    json_file="meteo.json"
+    cat > "$json_file" <<EOF
+{
+    "date": "$date_jour",
+    "heure": "$heure",
+    "ville": "$ville",
+    "temperature": "$temp_actuelle",
+    "prevision": "$temp_demain",
+    "vent": "$vitesse",
+    "humidite": "$humidite",
+    "visibilite": "$visibilite"
+}
+EOF
+exit 1
+fi  	
+    exit 1
 fi
 
+
+>>>>>>> origin/monirak_dev
 # Reformater en chaîne avec signe et °C
 if [ "$temp_demain_number" -gt 0 ]; then
     temp_demain="+${temp_demain_number}°C"
@@ -83,4 +120,29 @@ else
     temp_demain="${temp_demain_number}°C"
 fi
 
-echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" >> meteo.txt
+
+
+# Echo dans le format specifique demandé au TP 
+echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}"
+
+# Sauvegarde fichier Json
+if [ "$format_json" = true ]; then
+    json_file="meteo.json"
+    cat > "$json_file" <<EOF
+{
+    "date": "$date_jour",
+    "heure": "$heure",
+    "ville": "$ville",
+    "temperature": "$temp_actuelle",
+    "prevision": "$temp_demain",
+    "vent": "$vitesse",
+    "humidite": "$humidite",
+    "visibilite": "$visibilite"
+}
+EOF
+exit 0
+fi
+
+# Sauvegarder adns fichier texte
+echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}" >> meteo.txt
+>>>>>>> origin/monirak_dev
