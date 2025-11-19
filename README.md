@@ -95,7 +95,7 @@ Exemple de output en format JSON :
 ├── Extracteur_Météo.sh    # Script principal
 ├── meteo_brute.txt        # Données brutes temporaires (wttr.in)
 └── meteo.txt              # Historique des relevés formatés
-└── meteo.json             # Format JSON si spécifié avec option -json
+└── meteo.json             # Format JSON si spécifié avec option --json
 └── meteo_erreur.log       # Fichier contenant les logs d'erreurs
 ```
 
