@@ -8,6 +8,13 @@ else
     ville="$1"
 fi
 
+format_json=false
+
+# Version 3 partie 2 sauvegarder format json
+if [ "$2" == "--json" ]; then
+	format_json=true
+fi
+
 # Récupération de la date et de l'heure
 date_jour=$(date +%F)      # date avec option au format YYYY-MM-DD
 heure=$(date +%H:%M)       # heure avec option au format HH:MM
@@ -67,7 +74,7 @@ temp_demain_number=$(
     ' meteo_brute.txt
 )
 
-# Version 3 
+# Version 3 partie 1
 vitesse=$(curl -s "https://wttr.in/$ville?format=%w") # Documentation readme.md wttr.in one line output
 humidite=$(curl -s "https://wttr.in/$ville?format=%h") # Documentation readme.md wttr.in one line output
 visibilite=$(grep -Eo '[0-9]+ km' meteo_brute.txt | head -n 1) # Grep avec extended regex pour visibilite
@@ -76,8 +83,24 @@ visibilite=$(grep -Eo '[0-9]+ km' meteo_brute.txt | head -n 1) # Grep avec exten
 if [ -z "$temp_demain_number" ]; then
     echo "Erreur : impossible d’extraire les températures de demain."
     temp_demain_number="N/A"
-    echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}" >> meteo.txt
     echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : N/A"
+    echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}" >> meteo.txt
+    if [ "$format_json" = true ]; then
+    json_file="meteo.json"
+    cat > "$json_file" <<EOF
+{
+    "date": "$date_jour",
+    "heure": "$heure",
+    "ville": "$ville",
+    "temperature": "$temp_actuelle",
+    "prevision": "$temp_demain",
+    "vent": "$vitesse",
+    "humidite": "$humidite",
+    "visibilite": "$visibilite"
+}
+EOF
+exit 1
+fi  	
     exit 1
 fi
 
@@ -89,6 +112,28 @@ else
     temp_demain="${temp_demain_number}°C"
 fi
 
+
+
 # Echo dans le format specifique demandé au TP 
-echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}" >> meteo.txt
 echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}"
+
+# Sauvegarde fichier Json
+if [ "$format_json" = true ]; then
+    json_file="meteo.json"
+    cat > "$json_file" <<EOF
+{
+    "date": "$date_jour",
+    "heure": "$heure",
+    "ville": "$ville",
+    "temperature": "$temp_actuelle",
+    "prevision": "$temp_demain",
+    "vent": "$vitesse",
+    "humidite": "$humidite",
+    "visibilite": "$visibilite"
+}
+EOF
+exit 0
+fi
+
+# Sauvegarder adns fichier texte
+echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}" >> meteo.txt
