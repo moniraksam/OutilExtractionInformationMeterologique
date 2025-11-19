@@ -50,7 +50,8 @@ Le script rajoute aussi des timestamps pour faciliter le suivi d'erreurs.
 
 Ce projet consiste à développer un **outil automatisé en Bash** permettant d’extraire et de consigner les **informations météorologiques essentielles** d’une ville donnée à partir du service en ligne [wttr.in](https://wttr.in).  
 
-Le script interroge l’API textuelle de `wttr.in`, extrait la **température actuelle** ainsi que la **température moyenne prévue pour le lendemain**, puis enregistre ces données dans un fichier texte au format structuré.  
+La version 3.0 ajoute de nouvelles données (Vitesse de vent, taux d'humidité et visiblité), une option JSON et un
+système de logs d'erreurs.
 
 ---
 
