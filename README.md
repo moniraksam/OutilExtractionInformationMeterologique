@@ -1,5 +1,19 @@
-# Extracteur d’Informations Météorologiques  (Version 1.0)
+# Extracteur d’Informations Météorologiques  (Version 3.0)
 
+## Nouveautés de la Version 3.0
+
+Cette nouvelle version améliore significativement la version 1.0 en ajoutant trois fonctionnalités majeures :
+
+### 1. Informations météo supplémentaires
+Le script récupère désormais automatiquement :
+
+- La vitesse du vent
+
+- Le taux d’humidité
+
+- La visibilité
+
+Ces données sont intégrées directement dans la sortie standard et dans les fichiers générés.
 ## Présentation
 
 Ce projet consiste à développer un **outil automatisé en Bash** permettant d’extraire et de consigner les **informations météorologiques essentielles** d’une ville donnée à partir du service en ligne [wttr.in](https://wttr.in).  
