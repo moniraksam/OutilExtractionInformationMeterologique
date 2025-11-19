@@ -58,9 +58,7 @@ système de logs d'erreurs.
 
 ---
 
-## Fonctionnement général
-
-### Script principal : `Extracteur_Météo.sh` 
+## Exemple d’exécution
 
 Le script s’exécute depuis le terminal avec le nom d’une ville en argument :
 
@@ -68,7 +66,24 @@ Le script s’exécute depuis le terminal avec le nom d’une ville en argument 
 ./Extracteur_Météo.sh "nomDeVille"
 ```
 
-Si il n'y a pas de nom de ville fournis en argument `$1` alors "Toulouse" va être la ville utilisée par défaut.
+Si il n'y a pas de nom de ville fournis en argument `$1` alors "Toulouse" va être la ville utilisée par défaut.\
+Sortie ajoutée à `meteo.txt`
+
+```
+2025-11-19 - 21:08 - Toulouse : Aujourd'hui : +9°C, Vitesse Vent : →12km/h, Humidité : 81%, Visibilite: 19 km
+Prévision Temp Demain : +4°C
+```
+
+## Example avec option JSON
+
+```bash
+$ ./Extracteur_Météo.sh "nomDeVille" --json
+```
+
+Pour cette option il est obiigatoire de spécifier une ville en argument `$1`.
+
+Sortie ajoutée à `meteo.json`
+
 
 ## Structure du projet
 
@@ -81,21 +96,6 @@ Si il n'y a pas de nom de ville fournis en argument `$1` alors "Toulouse" va êt
 └── meteo_erreur.log       # Fichier contenant les logs d'erreurs
 ```
 
----
-
-## Exemple d’exécution
-
-```bash
-$ ./Extracteur_Météo.sh "Paris"
-```
-
-Sortie ajoutée à `meteo.txt` :
-
-```
-2025-11-12 - 14:30 - Paris : +11°C - +8°C
-```
-
----
 
 ## Compatibilité
 
