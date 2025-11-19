@@ -8,7 +8,7 @@ Le script interroge l’API textuelle de `wttr.in`, extrait la **température ac
 
 ---
 
-## Fonctionnement général
+## Exemple d’exécution
 
 ### Script principal : `Extracteur_Météo.sh` 
 
@@ -17,6 +17,16 @@ Le script s’exécute depuis le terminal avec le nom d’une ville en argument 
 ```bash
 ./Extracteur_Météo.sh "nomDeVille"
 ```
+
+Exemple de sortie :
+
+
+```
+2025-11-12 - 14:30 - Paris : +11°C - +8°C
+```
+
+Sortie affichée sur terminal et aussi ajoutée à `meteo.txt`.
+
 ---
 
 ## Structure du projet
@@ -30,19 +40,8 @@ Le script s’exécute depuis le terminal avec le nom d’une ville en argument 
 
 ---
 
-## Exemple d’exécution
 
-```bash
-$ ./Extracteur_Météo.sh "Paris"
-```
 
-Sortie ajoutée à `meteo.txt` :
-
-```
-2025-11-12 - 14:30 - Paris : +11°C - +8°C
-```
-
----
 
 ## Compatibilité
 
