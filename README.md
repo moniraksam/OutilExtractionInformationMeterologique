@@ -74,6 +74,8 @@ Si il n'y a pas de nom de ville fournis en argument `$1` alors "Toulouse" va êt
 ├── Extracteur_Météo.sh    # Script principal
 ├── meteo_brute.txt        # Données brutes temporaires (wttr.in)
 └── meteo.txt              # Historique des relevés formatés
+└── meteo.json             # Format JSON si spécifié avec option ``-json``
+└── meteo_erreur.log       # Fichier contenant les logs d'erreurs
 ```
 
 ---
