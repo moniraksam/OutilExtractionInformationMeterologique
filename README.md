@@ -27,17 +27,20 @@ Lorsqu'elle est activée :
 -   un fichier `meteo.json` est généré ou mis à jour
 -   chaque entrée ajoute une structure complète :
 
+Exemple de output en format JSON : 
+
 ``` json
 {
-  "date": "2025-11-12",
-  "heure": "15:02",
-  "ville": "Toulouse",
-  "temperature_actuelle": "+16°C",
-  "temperature_demain_moyenne": "+13°C",
-  "vent": "11 km/h",
-  "humidite": "67%",
-  "visibilite": "10 km"
+    "date": "2025-11-19",
+    "heure": "21:08",
+    "ville": "Toulouse",
+    "temperature": "+9°C",
+    "prevision": "+4°C",
+    "vent": "→12km/h",
+    "humidite": "81%",
+    "visibilite": "19 km"
 }
+
 ```
 
 ### 3. System de gestion des erreurs et de logs
@@ -74,7 +77,7 @@ Si il n'y a pas de nom de ville fournis en argument `$1` alors "Toulouse" va êt
 ├── Extracteur_Météo.sh    # Script principal
 ├── meteo_brute.txt        # Données brutes temporaires (wttr.in)
 └── meteo.txt              # Historique des relevés formatés
-└── meteo.json             # Format JSON si spécifié avec option ``-json``
+└── meteo.json             # Format JSON si spécifié avec option -json
 └── meteo_erreur.log       # Fichier contenant les logs d'erreurs
 ```
 
