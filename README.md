@@ -61,8 +61,10 @@ Le script interroge l’API textuelle de `wttr.in`, extrait la **température ac
 Le script s’exécute depuis le terminal avec le nom d’une ville en argument :
 
 ```bash
-./Extracteur_Météo.sh "Toulouse"
+./Extracteur_Météo.sh "nomDeVille"
 ```
+
+Si il n'y a pas de nom de ville fournis en argument `$1` alors "Toulouse" va être la ville utilisée par défaut.
 
 ### Étapes principales
 
