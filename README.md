@@ -14,6 +14,32 @@ Le script récupère désormais automatiquement :
 - La visibilité
 
 Ces données sont intégrées directement dans la sortie standard et dans les fichiers générés.
+
+### 2. Option de sauvegarde au format JSON
+
+Le script compte maintenant une option : 
+
+```bash
+./Extracteur_Météo.sh "nomDeVille" --json
+```
+Lorsqu'elle est activée :
+
+-   un fichier `meteo.json` est généré ou mis à jour
+-   chaque entrée ajoute une structure complète :
+
+``` json
+{
+  "date": "2025-11-12",
+  "heure": "15:02",
+  "ville": "Toulouse",
+  "temperature_actuelle": "+16°C",
+  "temperature_demain_moyenne": "+13°C",
+  "vent": "11 km/h",
+  "humidite": "67%",
+  "visibilite": "10 km"
+}
+```
+
 ## Présentation
 
 Ce projet consiste à développer un **outil automatisé en Bash** permettant d’extraire et de consigner les **informations météorologiques essentielles** d’une ville donnée à partir du service en ligne [wttr.in](https://wttr.in).  
