@@ -40,6 +40,12 @@ Lorsqu'elle est activée :
 }
 ```
 
+### System de gestion des erreurs et de logs
+
+En cas de problème avec la connexion à wttr.in, le script écrit un message d'erreur dans un fichier de logs d'erreur : `meteo_erreur.log`.
+
+Le script rajoute aussi des timestamps pour faciliter le suivi d'erreurs.
+
 ## Présentation
 
 Ce projet consiste à développer un **outil automatisé en Bash** permettant d’extraire et de consigner les **informations météorologiques essentielles** d’une ville donnée à partir du service en ligne [wttr.in](https://wttr.in).  
