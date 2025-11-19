@@ -27,21 +27,6 @@ Lorsqu'elle est activée :
 -   un fichier `meteo.json` est généré ou mis à jour
 -   chaque entrée ajoute une structure complète :
 
-Exemple de output en format JSON : 
-
-``` json
-{
-    "date": "2025-11-19",
-    "heure": "21:08",
-    "ville": "Toulouse",
-    "temperature": "+9°C",
-    "prevision": "+4°C",
-    "vent": "→12km/h",
-    "humidite": "81%",
-    "visibilite": "19 km"
-}
-
-```
 
 ### 3. System de gestion des erreurs et de logs
 
@@ -69,6 +54,8 @@ Le script s’exécute depuis le terminal avec le nom d’une ville en argument 
 Si il n'y a pas de nom de ville fournis en argument `$1` alors "Toulouse" va être la ville utilisée par défaut.\
 Sortie ajoutée à `meteo.txt`
 
+Example de sortie:
+
 ```
 2025-11-19 - 21:08 - Toulouse : Aujourd'hui : +9°C, Vitesse Vent : →12km/h, Humidité : 81%, Visibilite: 19 km
 Prévision Temp Demain : +4°C
@@ -83,6 +70,22 @@ $ ./Extracteur_Météo.sh "nomDeVille" --json
 Pour cette option il est obiigatoire de spécifier une ville en argument `$1`.
 
 Sortie ajoutée à `meteo.json`
+
+Exemple de output en format JSON : 
+
+``` json
+{
+    "date": "2025-11-19",
+    "heure": "21:08",
+    "ville": "Toulouse",
+    "temperature": "+9°C",
+    "prevision": "+4°C",
+    "vent": "→12km/h",
+    "humidite": "81%",
+    "visibilite": "19 km"
+}
+
+```
 
 
 ## Structure du projet
