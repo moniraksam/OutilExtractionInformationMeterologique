@@ -49,7 +49,7 @@ Sortie affichée sur terminal et aussi ajoutée à `meteo.txt`.
 |----------|----------------|----------|
 | **Linux** | ✅ Compatible | Bash, awk et curl sont requis. |
 | **Windows (WSL)** | ✅ Compatible | Bash, awk et curl sont requis. |
-| **macOS** | ⚠️ Partiellement compatible | Le script peut échouer à cause des différences UTF-8 dans `awk` et du rendu des caractères de bordure (`┌ ┤`).Nous avons une branche avec une version de scripte disponible pour macOS en travaille.|
+| **macOS** | ⚠️ Partiellement compatible | Le script peut échouer à cause des différences UTF-8 dans `awk` et du rendu des caractères de bordure (`┌ ┤`).
 
 
 
