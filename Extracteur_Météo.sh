@@ -1,14 +1,12 @@
 #!/bin/bash
 
-# Cas dont la ville est vide (argument positionnel 1 vide)
+# Ville par défaut
 if [ -z "$1" ]; then
-    echo "Usage invalide."
-    echo "Dans cette version il faut spécifier une ville au 1er argument"
-    echo "Usage : $0 'nomDeVille'"
-    exit 1
+    echo "Aucun nom de ville spécifié, utilisation de la ville par défaut : Toulouse"
+    ville="Toulouse"
+else
+    ville="$1"
 fi
-
-ville=$1
 
 # Récupération de la date et de l'heure
 date_jour=$(date +%F)      # date avec option au format YYYY-MM-DD
