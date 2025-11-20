@@ -1,4 +1,4 @@
-# Extracteur d’Informations Météorologiques  (Version 2.0 Automatisation périodique)
+# Extracteur d’Informations Météorologiques (Version 2.0 Automatisation périodique)
 
 ## Présentation
 
@@ -63,6 +63,7 @@ Vous pouvez vous renseigner sur la syntaxe et la documentation cron auprès de c
 ├── Extracteur_Météo.sh    # Script principal
 ├── meteo_brute.txt        # Données brutes temporaires (wttr.in)
 └── meteo.txt              # Historique des relevés formatés
+└── meteo.cron             # Skelette pour le fichier de config cron
 ```
 
 ---
