@@ -54,9 +54,10 @@ Lorsqu'elle est activée :
 
 ### 3. System de gestion des erreurs et de logs
 
-En cas de problème avec la connexion à wttr.in, le script écrit un message d'erreur dans un fichier de logs d'erreur : `meteo_erreur.log`.
-
+En cas de problème avec la connexion à wttr.in, le script écrit un message d'erreur dans un fichier de logs d'erreur : `meteo_erreur.log`.\
 Le script rajoute aussi des timestamps pour faciliter le suivi d'erreurs.
+
+
 ---
 
 ## Fonctionnement général
@@ -70,6 +71,8 @@ Le script `Extracteur_Météo.sh` :
 - Affiche les données puis les enregistre dans meteo.txt
 
 - Utilise une ville par défaut (Toulouse) si aucun argument n’est fourni
+
+- Change de comportement en fonctions des options 
 
 ---
 
@@ -114,6 +117,8 @@ Exemple de output en format JSON :
 }
 
 ```
+
+Autres exemples :
 
 ```bash
 $ ./Extracteur_Météo.sh --json # Ville par défaut Toulouse
