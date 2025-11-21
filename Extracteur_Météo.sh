@@ -81,4 +81,5 @@ else
 fi
 
 # Echo dans le format specifique demandé au TP 
-echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" >> meteo.txt
+script_dir=$(dirname "$(realpath "$0")")
+echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" >> "$script_dir/meteo.txt"
