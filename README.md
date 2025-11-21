@@ -4,7 +4,7 @@
 
 Ce projet consiste à développer un **outil automatisé en Bash** permettant d’extraire et de consigner les **informations météorologiques essentielles** d’une ville donnée à partir du service en ligne [wttr.in](https://wttr.in).  
 
-La version 3.0 ajoute de nouvelles données (Vitesse de vent, taux d'humidité et visiblité), une option JSON et un
+La version 3.0 ajoute de nouvelles données (Vitesse de vent, taux d'humidité et visiblité), une option d'archive et de sortie format JSON et un
 système de logs d'erreurs.
 
 ## Nouveautés de la Version 3.0
@@ -20,6 +20,10 @@ La fonctionnalité d'archive permet de sauvegarder un journal quotidien des donn
 où YYYYMMDD correspond à la date du jour.
 
 Cela permet de garder un historique des températures, de la vitesse du vent, de l'humidité, de la visibilité et des prévisions.
+
+```bash
+./Extracteur_Météo.sh --a
+```
 
 ## Variantes Demandées au TP
 
@@ -37,10 +41,10 @@ Ces données sont intégrées directement dans la sortie standard et dans les fi
 
 ### 2. Option de sauvegarde au format JSON
 
-Le script compte maintenant une option : 
+Le script compte maintenant une option de sortie JSON : 
 
 ```bash
-./Extracteur_Météo.sh "nomDeVille" --json
+./Extracteur_Météo.sh --json
 ```
 Lorsqu'elle est activée :
 
@@ -87,13 +91,11 @@ Example de sortie:
 Prévision Temp Demain : +4°C
 ```
 
-## Example avec option JSON
+## Example avec options
 
 ```bash
 $ ./Extracteur_Météo.sh "nomDeVille" --json
 ```
-
-Pour cette option il est obiigatoire de spécifier une ville en argument `$1`.
 
 Sortie ajoutée à `meteo.json`
 
@@ -113,6 +115,15 @@ Exemple de output en format JSON :
 
 ```
 
+```bash
+$ ./Extracteur_Météo.sh --json # Ville par défaut Toulouse
+$ ./Extracteur_Météo.sh --json -a
+$ ./Extracteur_Météo.sh -a
+$ ./Extracteur_Météo.sh -a --json
+$ ./Extracteur_Météo.sh nomDeVille --json -a 
+```
+
+---
 
 ## Structure du projet
 
