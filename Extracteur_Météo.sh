@@ -1,12 +1,14 @@
 #!/bin/bash
 
-# Ville par défaut
+# Cas dont la ville est vide (argument positionnel 1 vide)
 if [ -z "$1" ]; then
-    echo "Aucun nom de ville spécifié, utilisation de la ville par défaut : Toulouse"
-    ville="Toulouse"
-else
-    ville="$1"
+    echo "Usage invalide."
+    echo "Dans cette version il faut spécifier une ville au 1er argument"
+    echo "Usage : $0 'nomDeVille'"
+    exit 1
 fi
+
+ville=$1
 
 # Récupération de la date et de l'heure
 date_jour=$(date +%F)      # Date avec option au format YYYY-MM-DD
@@ -80,6 +82,5 @@ else
     temp_demain="${temp_demain_number}°C"
 fi
 
-# Echo dans le format specifique demandé au TP 
-script_dir=$(dirname "$(realpath "$0")")
-echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" >> "$script_dir/meteo.txt"
+# Echo dans le format specifique demandé au TP dans fichier "meteo.txt"
+echo "${date_jour} - ${heure} - ${ville} : ${temp_actuelle} - ${temp_demain}" >> meteo.txt
