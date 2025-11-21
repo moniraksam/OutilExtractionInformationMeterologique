@@ -22,7 +22,7 @@ où YYYYMMDD correspond à la date du jour.
 Cela permet de garder un historique des températures, de la vitesse du vent, de l'humidité, de la visibilité et des prévisions.
 
 ```bash
-./Extracteur_Météo.sh --a
+./Extracteur_Météo.sh -a
 ```
 
 ## Variantes Demandées au TP
