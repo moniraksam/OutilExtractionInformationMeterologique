@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#logger les erreurs
+# Variante 3 : Logger les erreurs
 log_error() {
     local message="$1"
     local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -8,20 +8,30 @@ log_error() {
     echo "[$timestamp] ERREUR: $message" >&2  # Afficher aussi sur invitée de commande
 }
 
-# Ville par défaut
-if [ -z "$1" ]; then
-    echo "Aucun nom de ville spécifié, utilisation de la ville par défaut : Toulouse"
-    ville="Toulouse"
-else
-    ville="$1"
-fi
 
+# Variables par defaut pour options
+ville="Toulouse"
 format_json=false
+archive=false
 
-# Version 3 partie 2 sauvegarder format json
-if [ "$2" == "--json" ]; then
-	format_json=true
-fi
+# Parsing des options
+
+for arg in "$@"; do
+    case "$arg" in
+        --json)
+            format_json=true
+            ;;
+        -a)
+            archive=true
+            ;;
+        *)
+            if [[ "$ville" == "Toulouse" ]]; then
+                ville="$arg"
+                echo "Ville spécifiée : $ville"
+            fi
+            ;;
+    esac
+done
 
 # Récupération de la date et de l'heure
 date_jour=$(date +%F)      # date avec option au format YYYY-MM-DD
@@ -120,7 +130,7 @@ if [ $? -ne 0 ]; then
     temp_demain_number=""
 fi
 
-# Version 3 partie 1
+# Variante 1
 vitesse=$(curl -s -w "\n%{http_code}" "https://wttr.in/$ville?format=%w&m&lang=en")
 http_code_vitesse=$(echo "$vitesse" | tail -n 1)
 vitesse=$(echo "$vitesse" | head -n 1)
@@ -187,11 +197,20 @@ EOF
         exit 1
     fi
     
-    exit 0
 fi
 
 # Sauvegarder dans fichier texte
-if ! echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}" >> meteo.txt; then
+if ! echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}" > meteo.txt; then
     log_error "Impossible d'écrire dans le fichier meteo.txt"
     exit 1
 fi
+
+
+# Sauvegarder pour version 3.0
+if [ "$archive" = true ]; then
+    archive_file="meteo_$(date +%Y%m%d).txt"
+    if ! echo -e "${date_jour} - ${heure} - ${ville} : Aujourd'hui : ${temp_actuelle}, Vitesse Vent : ${vitesse}, Humidité : ${humidite}, Visibilite: ${visibilite}\nPrévision Temp Demain : ${temp_demain}" >> "$archive_file"; then
+        log_error "Impossible d'écrire dans le fichier d'archive '$archive_file'"
+    fi
+fi
+
