@@ -49,6 +49,12 @@ Sortie affichée sur terminal et aussi ajoutée à `meteo.txt`.
 
 ## Automatisation avec CRON
 
+Le contenu pour cron est dans le fichier `meteo.cron` :
+
+```
+0 * * * * /chemin de votre script/Extracteur_Météo.sh
+```
+
 Pour mettre en marche la tache cron, il faut :  
 
    - Assurer que le script `Extracteur_météo.sh` est exécutable avec la commande : `chmod u+x` 
