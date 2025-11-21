@@ -8,6 +8,18 @@ Cette version ajoute la capacité d’exécuter automatiquement le script mété
 
 ---
 
+## Fonctionnement général
+
+Le script `Extracteur_Météo.sh` :
+
+- Récupère la météo depuis wttr.in
+- Obtient la température moyenne du lendemain
+- Affiche les données puis les enregistre dans meteo.txt
+- Utilise une ville par défaut (Toulouse) si aucun argument n’est fourni
+- Fonctionne avec cron grâce à un chemin dynamique qui lui permet d’enregistrer les fichiers dans le même dossier que le script
+
+---
+
 ## Exemple d’exécution
 
 ### Script principal : `Extracteur_Météo.sh` 
@@ -39,7 +51,7 @@ Sortie affichée sur terminal et aussi ajoutée à `meteo.txt`.
 
 Pour mettre en marche la tache cron, il faut :  
 
-   - Rendre le script exécutable avec la commande : `chmod +x /chemin de votre script/Extracteur_Météo.sh`  
+   - Assurer que le script `Extracteur_météo.sh` est exécutable avec la commande : `chmod u+x` 
    - Remplacer dans le fichier meteo.cron `/chemin de votre script/` par le chemin réelle vers Extracteur_Météo.sh  
    - Puis exécuter la commande `(crontab -l 2>/dev/null; cat /chemin de meteo.cron/meteo.cron) | crontab - ` après avoir changer `/chemin de meteo.cron/` par le chemin réelle  
    - Vous pouvez ensuite vérifier vos crontab avec la commande `crontab -e` pour s'assurer que la commande a bien été prise en compte  
