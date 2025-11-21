@@ -8,6 +8,18 @@ Le script interroge l’API textuelle de `wttr.in`, extrait la **température ac
 
 ---
 
+## Fonctionnement général
+
+Le script `Extracteur_Météo.sh` :
+
+- Récupère la météo depuis wttr.in
+
+- Obtient la température du lendemain
+
+- Affiche les données puis les enregistre dans meteo.txt
+
+---
+
 ## Exemple d’exécution
 
 ### Script principal : `Extracteur_Météo.sh` 
