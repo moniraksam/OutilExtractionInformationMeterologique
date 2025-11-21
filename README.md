@@ -13,10 +13,14 @@ Cette version ajoute la capacité d’exécuter automatiquement le script mété
 Le script `Extracteur_Météo.sh` :
 
 - Récupère la météo depuis wttr.in
-- Obtient la température moyenne du lendemain
+
+- Obtient la température du lendemain
+
 - Affiche les données puis les enregistre dans meteo.txt
+
 - Utilise une ville par défaut (Toulouse) si aucun argument n’est fourni
-- Fonctionne avec cron grâce à un chemin dynamique qui lui permet d’enregistrer les fichiers dans le même dossier que le script
+
+- Fonctionne avec cron grâce à un chemin dynamique, ce qui permet d’enregistrer tous les fichiers dans le même dossier que le script
 
 ---
 
@@ -30,7 +34,7 @@ Dans la version 1.0 le script s’exécute depuis le terminal avec le nom d’un
 ./Extracteur_Météo.sh "nomDeVille"
 ```
 
-Mais dans cette version 2.0, si aucun nom de ville est spécifié dans l'argument `$1` alors la ville par défaut qui va être utilisée est "Toulouse". On peut donc utiliser le script de la manière suivante sans arguments :
+Dans la version 2.0, si aucun nom de ville n’est spécifié dans l’argument $1, alors la ville par défaut utilisée est Toulouse. On peut donc exécuter :
 
 ```bash
 ./Extracteur_Météo.sh
@@ -55,7 +59,7 @@ Le contenu pour cron est dans le fichier `meteo.cron` :
 0 * * * * /chemin de votre script/Extracteur_Météo.sh
 ```
 
-Par défaut, `0 * * * *` indique que la tâche cron va executer le script tout les heure, chaque jours de chaque semaines.
+Par défaut, 0 * * * * signifie que la tâche cron exécutera le script toutes les heures, chaque jour, chaque semaine.
 
 Vous pouvez vous renseigner sur la syntaxe et la documentation cron auprès de ce lien : [Cron et crontab](https://www.linuxtricks.fr/wiki/cron-et-crontab-le-planificateur-de-taches)
 
@@ -63,13 +67,16 @@ Vous pouvez vous renseigner sur la syntaxe et la documentation cron auprès de c
 
 Pour mettre en marche la tache cron, il faut :  
 
-   - Assurer que le script `Extracteur_météo.sh` est exécutable avec la commande : `chmod u+x` 
-   - Utiliser la command `realpath` dans le répertoire dont le script `Extracteur_Météo.sh` est présent.
-   - Remplacer dans le fichier meteo.cron `/chemin de votre script/` par le chemin réelle vers obtenu avec `realpath`
-   - Puis exécuter la commande `cron Extracteur_Météo.sh`.
-   - Vous pouvez ensuite vérifier vos crontab avec la commande `crontab -l` pour s'assurer que la commande a bien été prise en compte  
-   
-Les résultats seront dans le fichier meteo.txt qui serait présent dans le même répertoire du scrip. La partie `script_dir=$(dirname "$(realpath "$0")")` du script assure ceci.
+1. S’assurer que le script Extracteur_Météo.sh est exécutable : `chmod u+x Extracteur_Météo.sh`
+2. Utiliser la commande realpath dans le répertoire contenant le script : `realpath Extracteur_Météo.sh`
+3. Remplacer dans le fichier meteo.cron le chemin /chemin/de/votre/script/ par le chemin réel obtenu.
+4. Installer le cron via : `crontab meteo.cron`
+5. Vérifier l’installation avec : `crontab -l`
+
+
+Les résultats seront enregistrés dans meteo.txt, présent dans le même répertoire que le script.
+Le script utilise `SCRIPT_DIR=$(dirname "$(realpath "$0")")` afin de garantir que tous les fichiers générés apparaissent dans le même répertoire que le script.
+
 
 ---
 
@@ -94,7 +101,7 @@ Les résultats seront dans le fichier meteo.txt qui serait présent dans le mêm
 |----------|----------------|----------|
 | **Linux** | ✅ Compatible | Bash, awk et curl sont requis. |
 | **Windows (WSL)** | ✅ Compatible | Bash, awk et curl sont requis. |
-| **macOS** | ⚠️ Partiellement compatible | Le script peut échouer à cause des différences UTF-8 dans `awk` et du rendu des caractères de bordure (`┌ ┤`).Nous avons une branche avec une version de scripte disponible pour macOS en travaille.|
+| **macOS** | ⚠️ Partiellement compatible | Le script peut échouer à cause des différences UTF-8 dans `awk` et du rendu des caractères de bordure (`┌ ┤`).
 
 
 
