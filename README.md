@@ -55,22 +55,21 @@ Le contenu pour cron est dans le fichier `meteo.cron` :
 0 * * * * /chemin de votre script/Extracteur_Météo.sh
 ```
 
-Pour mettre en marche la tache cron, il faut :  
-
-   - Assurer que le script `Extracteur_météo.sh` est exécutable avec la commande : `chmod u+x` 
-   - Remplacer dans le fichier meteo.cron `/chemin de votre script/` par le chemin réelle vers Extracteur_Météo.sh  
-   - Puis exécuter la commande `(crontab -l 2>/dev/null; cat /chemin de meteo.cron/meteo.cron) | crontab - ` après avoir changer `/chemin de meteo.cron/` par le chemin réelle  
-   - Vous pouvez ensuite vérifier vos crontab avec la commande `crontab -e` pour s'assurer que la commande a bien été prise en compte  
-
-Explication de la commande `(crontab -l 2>/dev/null; cat /chemin de meteo.cron/meteo.cron) | crontab - `:  
-   - `crontab -l 2>/dev/null` récupère les tâches cron existantes (sans erreur si aucune n’existe)  
-   - `cat /chemin de meteo.cron/meteo.cron` lit le contenu du fichier `meteo.cron`  
-   - Les parenthèses `( … ; … )` combinent les deux sorties en un seul flux  
-   - Le pipe `| crontab -` installe toutes les tâches combinées dans la table cron de l’utilisateur  
-Les anciennes tâches cron sont donc conservées et la nouvelle est ajoutée.
+Par défaut, `0 * * * *` indique que la tâche cron va executer le script tout les heure, chaque jours de chaque semaines.
 
 Vous pouvez vous renseigner sur la syntaxe et la documentation cron auprès de ce lien : [Cron et crontab](https://www.linuxtricks.fr/wiki/cron-et-crontab-le-planificateur-de-taches)
 
+## Mise en place CRON
+
+Pour mettre en marche la tache cron, il faut :  
+
+   - Assurer que le script `Extracteur_météo.sh` est exécutable avec la commande : `chmod u+x` 
+   - Utiliser la command `realpath` dans le répertoire dont le script `Extracteur_Météo.sh` est présent.
+   - Remplacer dans le fichier meteo.cron `/chemin de votre script/` par le chemin réelle vers obtenu avec `realpath`
+   - Puis exécuter la commande `cron Extracteur_Météo.sh`.
+   - Vous pouvez ensuite vérifier vos crontab avec la commande `crontab -l` pour s'assurer que la commande a bien été prise en compte  
+   
+Les résultats seront dans le fichier meteo.txt qui serait présent dans le même répertoire du scrip. La partie `script_dir=$(dirname "$(realpath "$0")")` du script assure ceci.
 
 ---
 
