@@ -137,9 +137,9 @@ $ ./Extracteur_Météo.sh nomDeVille --json -a
 ├── Extracteur_Météo.sh    # Script principal
 ├── meteo_brute.txt        # Données brutes temporaires (wttr.in)
 └── meteo.txt              # Historique des relevés formatés
-└── meteo.json             # Format JSON si spécifié avec option '--json'
+└── meteo.json             # Format JSON si spécifié avec option '--json' Optionnel
 └── meteo_erreur.log       # Fichier contenant les logs d'erreurs
-└── meteo_YYYYMMDD.txt     # Fichier contenant toutes les prévisions récupérées dans une journée, option '-a'
+└── meteo_YYYYMMDD.txt     # Fichier contenant toutes les prévisions récupérées dans une journée, option '-a' Optionnel
 
 ```
 
